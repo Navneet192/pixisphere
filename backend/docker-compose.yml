@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    restart: always
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - MONGO_URI=mongodb://pixi_user:StrongPass123@mongodb:27017/pixisphere?authSource=admin
+      - JWT_SECRET=mySuperSecretKey
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  mongodb:
+    image: mongo:4.4
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=pixi_user
+      - MONGO_INITDB_ROOT_PASSWORD=StrongPass123
+      - MONGO_INITDB_DATABASE=pixisphere
